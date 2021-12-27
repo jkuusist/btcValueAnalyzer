@@ -1,5 +1,26 @@
 const https = require('https')
 
+function longestBearTrend(arr, len) {
+	let streakLength = 0
+	let longestStreak = 0
+
+	for (let i = 1; i < len; i++) {
+		if (arr[i][1] < arr[i - 1][1]) {
+			streakLength += 1
+		} else {
+			if (streakLength > longestStreak) {
+				longestStreak = streakLength
+			}
+			streakLength = 0
+		}
+	}
+	if (streakLength > longestStreak) {
+		longestStreak = streakLength
+	}
+
+	return (longestStreak)
+}
+
 function handleBearTrend(req, res) {
 	let startDate = new Date(req.header('start date'))
 	let endDate = new Date(req.header('end date'))
@@ -41,6 +62,8 @@ function handleBearTrend(req, res) {
 				try {
 					const parsedData = JSON.parse(rawData)
 
+					console.log('parsedData: ', parsedData)
+
 					let priceArray = []
 
 					for (let i = 0; i < parsedData.prices.length; i++) {
@@ -51,7 +74,9 @@ function handleBearTrend(req, res) {
 						}
 					}
 
-					res.send(parsedData)
+					let longest = longestBearTrend(priceArray, priceArray.length)
+
+					res.send(longest.toString())
 				} catch (e) {
 					console.error(e.message)
 				}
