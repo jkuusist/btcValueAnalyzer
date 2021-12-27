@@ -41,9 +41,15 @@ function handleBearTrend(req, res) {
 				try {
 					const parsedData = JSON.parse(rawData)
 
-	//				console.log('parsedData: ', parsedData)
+					let priceArray = []
 
-					console.log(parsedData.prices)
+					for (let i = 0; i < parsedData.prices.length; i++) {
+						let temp = new Date(parsedData.prices[i][0])
+
+						if (temp.getUTCHours() === 0) {
+							priceArray.push(parsedData.prices[i])
+						}
+					}
 
 					res.send(parsedData)
 				} catch (e) {
