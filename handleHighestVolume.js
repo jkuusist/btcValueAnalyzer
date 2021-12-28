@@ -1,27 +1,6 @@
 const https = require('https')
 
-function longestBearTrend(arr, len) {
-	let streakLength = 0
-	let longestStreak = 0
-
-	for (let i = 1; i < len; i++) {
-		if (arr[i][1] < arr[i - 1][1]) {
-			streakLength += 1
-		} else {
-			if (streakLength > longestStreak) {
-				longestStreak = streakLength
-			}
-			streakLength = 0
-		}
-	}
-	if (streakLength > longestStreak) {
-		longestStreak = streakLength
-	}
-
-	return (longestStreak)
-}
-
-function handleBearTrend(req, res) {
+function handleHighestVolume(req, res) {
 	let startDate = new Date(req.header('start date'))
 	let endDate = new Date(req.header('end date'))
 
@@ -56,21 +35,40 @@ function handleBearTrend(req, res) {
 				try {
 					const parsedData = JSON.parse(rawData)
 
-					console.log(parsedData)
+					let volumeArray = []
 
-					let priceArray = []
-
-					for (let i = 0; i < parsedData.prices.length; i++) {
-						let temp = new Date(parsedData.prices[i][0])
+					for (let i = 0; i < parsedData.total_volumes.length; i++) {
+						let temp = new Date(parsedData.total_volumes[i][0])
 
 						if (temp.getUTCHours() === 0) {
-							priceArray.push(parsedData.prices[i])
+							volumeArray.push(parsedData.total_volumes[i])
 						}
 					}
 
-					let longest = longestBearTrend(priceArray, priceArray.length)
+					let highest = volumeArray[0]
 
-					res.send(longest.toString())
+					for (let i = 0; i < volumeArray.length; i++) {
+						if (volumeArray[i][1] > highest[1]) {
+							highest = volumeArray[i]
+						}
+					}
+
+					const highestDate = new Date(highest[0])
+					const highestVolume = highest[1]
+
+					const highestYear = highestDate.getUTCFullYear()
+					let highestMonth = highestDate.getUTCMonth() + 1
+					let highestDay = highestDate.getUTCDate()
+
+					if (highestMonth.toString().length === 1) {
+						highestMonth = '0' + highestMonth
+					}
+
+					if (highestDay.toString().length === 1) {
+						highestDay = '0' + highestDay
+					}
+
+					res.send(`${highestYear}-${highestMonth}-${highestDay}, ${highestVolume}€`)
 				} catch (e) {
 					res.send(e.message)
 				}
@@ -79,4 +77,4 @@ function handleBearTrend(req, res) {
 	}
 }
 
-exports.handleBearTrend = handleBearTrend
+exports.handleHighestVolume = handleHighestVolume

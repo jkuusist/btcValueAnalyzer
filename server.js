@@ -3,6 +3,7 @@ const app = express()
 const port = 8080
 
 const handleBearTrend = require('./handleBearTrend')
+const handleHighestVolume = require('./handleHighestVolume')
 
 app.get('/', (req, res) => {
 	res.send('Welcome to the BTC value analyzer!')
@@ -13,7 +14,9 @@ app.get('/bearTrend', (req, res) => {
 })
 
 app.get('/highestVolume', (req, res) => {
-	res.send('highestVolume')
+	handleHighestVolume.handleHighestVolume(req, res)
+
+//	res.send('highestVolume')
 })
 
 app.get('/buySell', (req, res) => {
