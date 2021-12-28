@@ -62,8 +62,6 @@ function handleBearTrend(req, res) {
 				try {
 					const parsedData = JSON.parse(rawData)
 
-					console.log('parsedData: ', parsedData)
-
 					let priceArray = []
 
 					for (let i = 0; i < parsedData.prices.length; i++) {
