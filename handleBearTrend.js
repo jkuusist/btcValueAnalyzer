@@ -39,16 +39,10 @@ function handleBearTrend(req, res) {
 			const { statusCode } = response
 			const contentType = response.headers['content-type']
 
-			let error
-
 			if (statusCode != 200) {
-				error = new Error(`Request failed. Status Code: ${statusCode}`)
+				res.send(`Request failed. Status Code: ${statusCode}`)
 			} else if (!contentType.includes('application/json')) {
-				error = new Error(`Invalid content type: ${contentType}`)
-			}
-
-			if (error) {
-				console.error(error.message)
+				res.send(`Invalid content type: ${contentType}`)
 			}
 
 			response.setEncoding('utf8')
