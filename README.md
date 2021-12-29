@@ -1,4 +1,4 @@
-# btc_value_analyzer
+# btcValueAnalyzer
 
 A backend server that can be used to find out information about Bitcoin's market value and trading volume in various date ranges. I used the Express framework for this project, as I find it quite convenient for making backend servers that are easy to maintain and extend.
 
