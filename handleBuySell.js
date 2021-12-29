@@ -1,3 +1,5 @@
+const utils = require('./utils')
+
 const https = require('https')
 
 function checkDecreasing(priceArray) {
@@ -9,26 +11,6 @@ function checkDecreasing(priceArray) {
 	}
 
 	return (1)
-}
-
-function formatDate(unixTime) {
-	let temp = new Date(unixTime)
-
-	const year = temp.getUTCFullYear()
-	let month = temp.getUTCMonth()
-	let day = temp.getUTCDate()
-
-	if (month.toString().length === 1) {
-		month = '0' + month
-	}
-
-	if (day.toString().length === 1) {
-		day = '0' + day
-	}
-
-	let formattedDate = year + '-' + month + '-' + day
-
-	return (formattedDate)
 }
 
 function handleBuySell(req, res) {
@@ -102,8 +84,8 @@ function handleBuySell(req, res) {
 							}
 						}
 
-						buyDate = formatDate(buyDate[0])
-						sellDate = formatDate(sellDate[0])
+						buyDate = utils.formatDate(buyDate[0])
+						sellDate = utils.formatDate(sellDate[0])
 
 						res.send(`buy: ${buyDate}\nsell: ${sellDate}`)
 					}

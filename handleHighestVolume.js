@@ -1,5 +1,7 @@
 const https = require('https')
 
+const utils = require('./utils')
+
 function handleHighestVolume(req, res) {
 	let startDate = new Date(req.header('start date'))
 	let endDate = new Date(req.header('end date'))
@@ -55,22 +57,9 @@ function handleHighestVolume(req, res) {
 						}
 					}
 
-					const highestDate = new Date(highest[0])
-					const highestVolume = highest[1]
+					const highestDate = utils.formatDate(highest[0])
 
-					const highestYear = highestDate.getUTCFullYear()
-					let highestMonth = highestDate.getUTCMonth() + 1
-					let highestDay = highestDate.getUTCDate()
-
-					if (highestMonth.toString().length === 1) {
-						highestMonth = '0' + highestMonth
-					}
-
-					if (highestDay.toString().length === 1) {
-						highestDay = '0' + highestDay
-					}
-
-					res.send(`${highestYear}-${highestMonth}-${highestDay}, ${highestVolume}€`)
+					res.send(`${highestDate}, ${highest[1]}€`)
 				} catch (e) {
 					res.send(e.message)
 				}
