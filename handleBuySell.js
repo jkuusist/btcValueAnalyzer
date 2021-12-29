@@ -44,6 +44,8 @@ function handleBuySell(req, res) {
 		res.send('Invalid end date')
 	} else if (unixStartDate >= (unixEndDate - 3600)) {
 		res.send('End date must be later than start date')
+	} else if (unixStartDate < 1367107200 || unixEndDate < 1367107200){
+		res.send('Dates before 2013-04-28 not supported')
 	} else {
 		https.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=${unixStartDate}&to=${unixEndDate}`, response => {
 			const { statusCode } = response
